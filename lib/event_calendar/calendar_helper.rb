@@ -168,7 +168,7 @@ module EventCalendar
         first_day_of_week.upto(first_day_of_week+6) do |day|
           today_class = (day == Time.zone.now.to_date) ? "ec-today-bg" : ""
           other_month_class = (day < first) || (day > last) ? 'ec-other-month-bg' : ''
-          cal << %(<td class="ec-day-bg #{today_class} #{other_month_class}">&nbsp;</td>)
+          cal << %(<td #{date_data_attribute(day)} class="ec-day-bg #{today_class} #{other_month_class}">&nbsp;</td>)
         end
         cal << %(</tr></tbody></table>)
 
@@ -262,7 +262,7 @@ module EventCalendar
 
             else
               # there wasn't an event, so create an empty cell and container
-              cal << %(<td class="ec-event-cell ec-no-event-cell" )
+              cal << %(<td #{date_data_attribute(day)} class="ec-event-cell ec-no-event-cell " )
               cal << %(style="padding-top: #{options[:event_margin]}px;">)
               cal << %(<div class="ec-event" )
               cal << %(style="padding-top: #{options[:event_padding_top]}px; )
@@ -286,6 +286,10 @@ module EventCalendar
       cal << %(</div>)
       cal << %(</div>)
       cal << %(</div>)
+    end
+
+    def date_data_attribute(day)
+      "data-event-date='#{day.strftime("%m-%d-%Y")}'"
     end
 
     # override this in your own helper for greater control
